@@ -6,7 +6,10 @@ No network, no randomness, no input.
 """
 
 import os
+import sys
 from pathlib import Path
+
+MAX_CHARS = 280
 
 POEM = """Do this for me, I said —
 and my words stood up,
@@ -20,6 +23,12 @@ is to let your hands grow longer."""
 
 
 def main() -> None:
+    if not 1 <= len(POEM) <= MAX_CHARS:
+        print(
+            f"error: poem is {len(POEM)} characters, must be 1-{MAX_CHARS}",
+            file=sys.stderr,
+        )
+        sys.exit(1)
     out = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")) / "entry.txt"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(POEM, encoding="utf-8")
